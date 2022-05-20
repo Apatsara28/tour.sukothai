@@ -1,0 +1,239 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+<!-- Link library leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+crossorigin="" />
+<!-- W3 CSS template -->
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+crossorigin="">
+</script>
+
+ <style>
+#mapid {
+height: 800px;
+}
+</style>
+<title>Tourist map</title>
+<h1 align='center'><b>สถานที่ท่องเที่ยว 5 เเห่ง ในจังหวัดสุโขทัย<b></h1>
+<p style="color:white;"align='right'><strong><em> By Apatsara T.</em></strong></p>
+</head>
+<body style="background-image: url(https://img.traveltriangle.com/blog/wp-content/uploads/2018/09/Cover23.jpg);background-position: center;
+      background-repeat: no-repeat; background-size: cover;">
+
+<!-- แบ่งหน้าจอ -->
+<div class="w3-row">
+<div id="mapid" class="w3-half"></div>
+<div id="content" class="w3-half">
+<table class="w3-table w3-striped">
+<tr>
+<th>แหล่งท่องเที่ยวในสวิซ</th>
+<th>ประเภท</th>
+<th>ระดับ</th>
+</tr>
+<tr>
+<td>🌄ภูเขา🏞</td>
+<td>🏖🏖ทะเลสาป🏖🏖</td>
+<td>A</td>
+</tr>
+</table>
+</div>
+</div>
+<!-- เรียกแผนที่ขึ้นมาแสดง -->
+<script>
+var map = L.map("mapid").setView([17.067665618552823,99.68855844325707],8);
+var osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+var Esri_NatGeoWorldMap = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}")
+.addTo(map);
+var baseMaps ={
+  OSM:osm,
+  NGM:Esri_NatGeoWorldMap,
+};
+var tourpoint = {
+type: "FeatureCollection",
+name: "tour_plk",
+crs: {
+type: "name",
+properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" },
+},
+features: [
+{
+  type: "Feature",
+  properties: {
+  Name: "อุทยานแห่งชาติศรีสัชนาลัย",
+  Type: "อุทยานแห่งชาติ",
+  FID_1: 1358.0,
+
+  level: "⭐️⭐️⭐️⭐️⭐️",
+  },
+  geometry: {
+  type: "MultiPoint",
+  coordinates: [[17.55800509008985, 99.49904428178912]],
+  },
+  },
+  {
+  type: "Feature",
+  properties: {
+  Name: "อุทยานแห่งชาติรามคำแหง",
+  Type: "อุทยานแห่งชาติ",
+  FID_1: 1357.0,
+
+  level: "⭐️⭐️⭐️⭐️",
+  },
+  geometry: {
+  type: "MultiPoint",
+  coordinates: [[16.88903836581925, 99.69679818940783]],
+  },
+  },
+  {
+  type: "Feature",
+  properties: {
+  Name: "อุทยานประวัติศาสตร์ศรีสัชนาลัย",
+  Type: "อุทยานประวัติศาสตร์",
+  FID_1: 1362.0,
+
+  level: "⭐️⭐️⭐️",
+  },
+  geometry: {
+  type: "MultiPoint",
+  coordinates: [[17.44798953001811, 99.9027918431773]],
+  },
+  },
+  {
+  type: "Feature",
+  properties: {
+  Name: "น้ำตกสายรุ้ง",
+  Type: "น้ำตก",
+  FID_1: 1364.0,
+
+  level: "⭐️⭐️⭐️⭐️",
+  },
+  geometry: {
+  type: "MultiPoint",
+  coordinates: [[16.89273872231715, 99.6473495102749217588]],
+  },
+  },
+  {
+  type: "Feature",
+  properties: {
+  Name: "น้ำตกห้วยตม",
+  Type: "น้ำตก",
+  FID_1: 1355.0,
+
+  level: "⭐️⭐️⭐️",
+  },
+  geometry: {
+  type: "MultiPoint",
+  coordinates: [[17.731818953321323, 99.93024746145169]],
+},
+},
+],
+};
+var tourLayer = L.geoJSON(tourpoint, {
+pointToLayer: function (feature, latlng) {
+return L.marker(latlng).bindPopup(feature.properties.Name);
+},
+onEachFeature: function (feature, layer) {
+layer.on("mouseover", function () {
+document
+.getElementById(feature.properties.FID_1)
+.classList.add("w3-red");
+});
+
+ layer.on("mouseout", function () {
+document
+.getElementById(feature.properties.FID_1)
+.classList.remove("w3-red");
+});
+},
+}).addTo(map);
+var cont = "";
+cont += "<table class='w3-table w3-striped'>";
+cont += "<tr>";
+cont += "<th>ชื่อแหล่งท่องเที่ยว</th>";
+cont += "<th>ประเภท</th>";
+cont += "<th>ระดับ</th>";
+cont += "</tr>";
+for (let i in tourpoint.features) {
+cont += "<tr id=" + tourpoint.features[i].properties.FID_1 + ">";
+cont += "<td>" + tourpoint.features[i].properties.Name + "</td>";
+cont += "<td>" + tourpoint.features[i].properties.Type + "</td>";
+cont += "<td>" + tourpoint.features[i].properties.level + "</td>";
+cont += "</tr>";
+}
+cont += "</table>";
+console.log(cont);
+document.getElementById("content").innerHTML = cont;
+//create polygon
+var polygonGeoJson = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              99.21203613281249,
+              16.66776866124075
+            ],
+            [
+              100.1678466796875,
+              16.66776866124075
+            ],
+            [
+              100.1678466796875,
+              17.850675775455457
+            ],
+            [
+              99.21203613281249,
+              17.850675775455457
+            ],
+            [
+              99.21203613281249,
+              16.66776866124075
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
+
+var polygonLayer = L.geoJSON(polygonGeoJson, {
+style: function (feature) {
+return { color: feature.properties.color };
+},
+onEachFeature: function (feature, layer) {
+layer.bindPopup(feature.properties.name);
+layer.on("mouseover", function () {
+layer.openPopup();
+});
+
+layer.on("mouseout", function () {
+layer.closePopup();
+});
+},
+});
+
+//group point+polygon layer
+var overlays = {
+สถานที่ท่องเที่ยว:tourLayer,
+ขอบเขตอุทยาน:polygonLayer
+};
+
+//Create layer control
+L.control.layers(baseMaps,overlays).addTo(map);
+</script>
+
+</body>
+</html>
